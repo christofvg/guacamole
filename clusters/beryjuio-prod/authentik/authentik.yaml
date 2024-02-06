@@ -1,0 +1,86 @@
+# prettier-ignore
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: authentik
+  namespace: authentik
+spec:
+  chart:
+    spec:
+      chart: authentik
+      version: 2023.10.6
+      sourceRef:
+        kind: HelmRepository
+        name: authentik
+        namespace: flux-system
+  timeout: 10m0s
+  interval: 1h0m0s
+  valuesFrom:
+  - kind: Secret
+    name: authentik-secrets
+  values:
+    fullnameOverride: authentik
+    autoscaling:
+      server:
+        enabled: true
+        minReplicas: 2
+    ingress:
+      enabled: true
+      ingressClassName: istio
+      hosts:
+      - host: id.beryju.org
+        paths:
+        - path: "/"
+          pathType: Prefix
+      tls:
+      - hosts: [id.beryju.org]
+        secretName: beryjuorg-authentik
+    resources:
+      server:
+        requests:
+          cpu: 200m
+        limits:
+          cpu: "2"
+    postgresql:
+      global:
+        imageRegistry: proxy.registry.beryju.org
+      enabled: true
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+    redis:
+      global:
+        imageRegistry: proxy.registry.beryju.org
+      enabled: true
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+    prometheus:
+      serviceMonitor:
+        create: true
+    image:
+      repository: ghcr.io/goauthentik/dev-server
+      tag: gh-next-1705405686-11a51e1 # {"$imagepolicy": "flux-system:authentik-gh-next:tag"}
+    authentik:
+      postgresql:
+        name: "authentik"
+        user: "authentik"
+      email:
+        from: authentik@services.beryju.org
+        host: email-smtp.eu-central-1.amazonaws.com
+        port: 587
+        use_tls: true
+      outposts:
+        container_image_base: ghcr.io/goauthentik/dev-%(type)s:gh-%(build_hash)s
+      error_reporting:
+        enabled: true
+        environment: beryjuio-prod
+        send_pii: true
+        sentry_dsn: https://7f785644f04047ea8202df0320bb671d@sentry.beryju.org/3
+        sample_rate: 0.5
+      events:
+        context_processors:
+          geoip: /geoip/GeoLite2-City.mmdb
+          asn: /geoip/GeoLite2-ASN.mmdb

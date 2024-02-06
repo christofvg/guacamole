@@ -1,0 +1,40 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: kyverno
+  namespace: kyverno
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: kyverno
+      version: 2.7.5
+      sourceRef:
+        kind: HelmRepository
+        name: kyverno-charts
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  values:
+    serviceMonitor:
+      enabled: true
+    resources:
+      requests:
+        cpu: 10m
+    admissionController:
+      logging:
+        format: json
+    backgroundController:
+      logging:
+        format: json
+    cleanupController:
+      logging:
+        format: json
+    reportsController:
+      logging:
+        format: json
