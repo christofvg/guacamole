@@ -70,7 +70,7 @@ ingress:
         - "/"
 
   tls: 
-    - secretName: <path:christof#ingress-secret-name>
+    - secretName: 	letsencrypt-guacamole
       hosts:
               - <path:christof#guacamole-host>
 
