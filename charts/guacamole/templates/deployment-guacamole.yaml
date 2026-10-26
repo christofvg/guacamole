@@ -16,7 +16,6 @@ spec:
         app.kubernetes.io/name: {{ include "guacamole.name" . }}-guacamole
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-      enableServiceLinks: false
     {{- with .Values.guacamole.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
