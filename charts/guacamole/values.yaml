@@ -17,6 +17,7 @@ guacamole:
     SAML_IDP_METADATA_URL: <path:christof#saml-idp-metadata-url>
     SAML_STRICT: "false"
     EXTENSION_PRIORITY: "saml"
+    LOGBACK_LEVEL: "debug"
 
 guacd:
   image:
