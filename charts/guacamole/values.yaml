@@ -7,7 +7,7 @@ replicaCount: 1
 guacamole:
   image:
     repository: guacamole/guacamole
-    tag: "latest"
+    tag: "1.5.5"
     pullPolicy: IfNotPresent
   # Key-value settings directly passed as environment variables
   settings:
@@ -21,7 +21,7 @@ guacamole:
 guacd:
   image:
     repository: guacamole/guacd
-    tag: "latest"
+    tag: "1.5.5"
     pullPolicy: IfNotPresent
 
 dbcreation:
