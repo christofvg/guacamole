@@ -26,7 +26,7 @@ guacd:
 
 dbcreation:
   image:
-    repository: bitnami/postgresql
+    repository: bitnamilegacy/postgresql
     tag: 14.3.0-debian-10-r9
     pullPolicy: IfNotPresent
 
