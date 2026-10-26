@@ -17,7 +17,6 @@ guacamole:
     SAML_IDP_METADATA_URL: <path:christof#saml-idp-metadata-url>
     SAML_STRICT: "false"
     EXTENSION_PRIORITY: "saml"
-    POSTGRESQL_PORT: 5432
 
 guacd:
   image:
